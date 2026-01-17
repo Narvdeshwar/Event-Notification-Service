@@ -5,7 +5,6 @@ import (
 	"notification-service/internal/config"
 	"notification-service/internal/service"
 	"notification-service/internal/store"
-
 	"github.com/gin-gonic/gin"
 )
 
