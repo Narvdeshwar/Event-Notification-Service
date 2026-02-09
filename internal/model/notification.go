@@ -7,18 +7,18 @@ type Status string
 const (
 	StatusPending    Status = "Pending"
 	StatusProcessing Status = "Processing"
-	StatusSent       Status = "Sent"
-	StatusFailed     Status = "Failed"
+	StatusSend       Status = "Send"
+	StatusFaild      Status = "Faild"
 )
 
 type Notification struct {
-	ID        string
+	Id        string
 	Type      string
 	Recipient string
 	Payload   []byte
 	Status    Status
 	Attempts  int
 	NextRetry *time.Time
-	CreatedAt *time.Time
-	UpdatedAt *time.Time
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
