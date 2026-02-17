@@ -11,6 +11,7 @@ type NotificationRepository interface {
 	FetchAndMarkProcessing(ctx context.Context, limit int) ([]model.Notification, error)
 	MarkSent(ctx context.Context, id string) error
 	ScheduleRetry(ctx context.Context, id string, nextRetry time.Time) error
-	MarkFailed(ctx context.Context,id string) error
-	RecoverStuckJob(ctx context.Context,timeout time.Duration) error
+	MarkFailed(ctx context.Context, id string) error
+	RecoverStuckJob(ctx context.Context, timeout time.Duration) error
+	MoveToDeadLetter(ctx context.Context, n model.Notification, errMsg string) error
 }
