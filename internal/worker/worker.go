@@ -9,9 +9,9 @@ import (
 )
 
 type Worker struct {
-	id    int
-	queue <-chan model.Notification
-	repo  store.NotificationRepository
+	id       int
+	queue    <-chan model.Notification
+	repo     store.NotificationRepository
 	notifier notifier.Notifier
 }
 
@@ -27,21 +27,31 @@ func (w *Worker) Start(ctx context.Context) {
 }
 
 func (w *Worker) process(ctx context.Context, n model.Notification) {
-	err := w.notifier.Send(ctx,n)
+	err := w.notifier.Send(ctx, n)
 	if err != nil {
-		w.handleFailure(ctx, n)
+		w.handleFailure(ctx, n, err)
 		return
 	}
 	w.repo.MarkSent(ctx, n.Id)
 
 }
 
-func (w *Worker) handleFailure(ctx context.Context, n model.Notification) {
+func (w *Worker) handleFailure(
+	ctx context.Context,
+	n model.Notification,
+	err error,
+) {
+
+	maxRetries := 5
 	attempts := n.Attempts + 1
-	if attempts >= 5 {
+
+	if attempts >= maxRetries {
 		w.repo.MarkFailed(ctx, n.Id)
 		return
 	}
-	nextRetry := time.Now().Add(time.Duration(attempts*2) * time.Second)
+
+	backoff := time.Duration(attempts*2) * time.Second
+	nextRetry := time.Now().Add(backoff)
+
 	w.repo.ScheduleRetry(ctx, n.Id, nextRetry)
 }
