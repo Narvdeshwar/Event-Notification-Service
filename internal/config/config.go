@@ -17,7 +17,7 @@ func Load() Config {
 		HTTPPort: getEnv("HTTP_PORT", "8080"),
 		DBUrl:    getEnv(
 			"DB_URL",
-			"postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable",
+			"postgres://postgres:postgres@postgres:5432/notifications?sslmode=disable",
 		),
 	}
 }
