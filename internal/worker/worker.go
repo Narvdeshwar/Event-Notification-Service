@@ -46,7 +46,8 @@ func (w *Worker) handleFailure(
 	attempts := n.Attempts + 1
 
 	if attempts >= maxRetries {
-		w.repo.MarkFailed(ctx, n.Id)
+		// w.repo.MarkFailed(ctx, n.Id)
+		w.repo.MoveToDeadLetter(ctx, n, err.Error())
 		return
 	}
 
