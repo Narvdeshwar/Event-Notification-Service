@@ -32,7 +32,7 @@ func (p *Poller) Start(ctx context.Context) {
 func (p *Poller) fetch() {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
-	jobs, err := p.repo.fetchAndMarkProcessing(ctx, p.batchSize)
+	jobs, err := p.repo.FetchAndMarkProcessing(ctx, p.batchSize)
 	if err != nil {
 		log.Println("fetch error", err)
 		return
