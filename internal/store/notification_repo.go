@@ -7,4 +7,5 @@ import (
 
 type NotificationRepository interface {
 	Insert(ctx context.Context,n *model.Notification) error
+	FetchAndMarkProcessing (ctx context.Context,limit int) ([]model.Notification,error)
 }
