@@ -11,4 +11,5 @@ type NotificationRepository interface {
 	FetchAndMarkProcessing(ctx context.Context, limit int) ([]model.Notification, error)
 	MarkSent(ctx context.Context, id string) error
 	ScheduleRetry(ctx context.Context, id string, nextRetry time.Time) error
+	MarkFailed(ctx context.Context,id string) error
 }
