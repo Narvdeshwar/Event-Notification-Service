@@ -3,6 +3,7 @@ package worker
 import (
 	"context"
 	"event-driven-notification-service/internal/model"
+	"event-driven-notification-service/internal/notifier"
 	"event-driven-notification-service/internal/store"
 	"time"
 )
@@ -11,6 +12,7 @@ type Worker struct {
 	id    int
 	queue <-chan model.Notification
 	repo  store.NotificationRepository
+	notifier notifier.Notifier
 }
 
 func (w *Worker) Start(ctx context.Context) {
@@ -25,7 +27,7 @@ func (w *Worker) Start(ctx context.Context) {
 }
 
 func (w *Worker) process(ctx context.Context, n model.Notification) {
-	err := sendEmail(n) // stimulate notification
+	err := w.notifier.Send(ctx,n)
 	if err != nil {
 		w.handleFailure(ctx, n)
 		return
