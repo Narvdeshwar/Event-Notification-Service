@@ -4,12 +4,12 @@ import (
 	"database/sql"
 )
 
-type PostGresRepo struct {
+type PostgresRepo struct {
 	db *sql.DB
 }
 
-func NewPostgresRepo(db *sql.DB) *PostGresRepo {
-	return &PostGresRepo{
+func NewPostgresRepo(db *sql.DB) *PostgresRepo {
+	return &PostgresRepo{
 		db: db,
 	}
 }

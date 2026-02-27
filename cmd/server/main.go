@@ -1,12 +1,8 @@
 package main
 
 import (
-	"database/sql"
 	"log"
-
-	_ "github.com/lib/pq"
 	"github.com/gin-gonic/gin"
-
 	"event-driven-notification-service/internal/api"
 	"event-driven-notification-service/internal/config"
 	"event-driven-notification-service/internal/metrics"
@@ -16,38 +12,33 @@ import (
 
 func main() {
 
-	// 1️⃣ Load config
+	// Load config
 	cfg := config.Load()
 
-	// 2️⃣ Register metrics
+	// Register metrics
 	metrics.Register()
 
-	// 3️⃣ Connect to database
-	db, err := sql.Open("postgres", cfg.DBUrl)
+	// Connect to database
+	db, err := store.Connect(cfg.DBUrl)
 	if err != nil {
-		log.Fatal("failed to open db:", err)
+		log.Fatal("Could not connect to database after retries:", err)
 	}
+	defer db.Close()
 
-	if err := db.Ping(); err != nil {
-		log.Fatal("failed to connect to db:", err)
-	}
-
-	log.Println("Database connected successfully")
-
-	// 4️⃣ Create repository
+	// Create repository
 	repo := store.NewPostgresRepo(db)
 
-	// 5️⃣ Create service (inject repo)
+	// Create service (inject repo)
 	svc := service.New(repo)
 
-	// 6️⃣ Create handler (inject service)
+	// Create handler (inject service)
 	handler := api.New(svc)
 
-	// 7️⃣ Setup router
+	// Setup router
 	router := gin.Default()
 	api.RegisterRoutes(router, handler)
 
-	// 8️⃣ Start HTTP server
+	// Start HTTP server
 	log.Println("Server running on port", cfg.HTTPPort)
 	if err := router.Run(":" + cfg.HTTPPort); err != nil {
 		log.Fatal("server failed:", err)

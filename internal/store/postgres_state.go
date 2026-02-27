@@ -2,8 +2,8 @@ package store
 
 import "context"
 
-func (r *PostGresRepo) MarkSent(ctx context.Context, id string) error {
-	query := `UPDATE notifications 
+func (r *PostgresRepo) MarkSent(ctx context.Context, id string) error {
+	query := `UPDATE notifications
 	set STATUS='SENT', updated_at=now()
 	Where id=$1
 	`

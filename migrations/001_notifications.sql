@@ -1,4 +1,4 @@
-CREATE TABLE notifications{
+CREATE TABLE notifications (
     id UUID PRIMARY KEY,
     type TEXT NOT NULL,
     recipient TEXT NOT NULL,
@@ -8,9 +8,9 @@ CREATE TABLE notifications{
     next_retry_at TIMESTAMP NULL,
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL
-}
+);
 
-CREATE INDEX idx_notification_pending ON notifications(
+CREATE INDEX idx_notification_pending ON notifications (
     status,
     next_retry_at
-)
+);

@@ -5,7 +5,7 @@ import (
 	"event-driven-notification-service/internal/model"
 )
 
-func (r *PostGresRepo) FetchAndMarkProcessing(
+func (r *PostgresRepo) FetchAndMarkProcessing(
 	ctx context.Context,
 	limit int,
 ) ([]model.Notification, error) {
@@ -59,7 +59,7 @@ func (r *PostGresRepo) FetchAndMarkProcessing(
 	for _, job := range jobs {
 		_, err := tx.ExecContext(
 			ctx,
-			`UPDATE notifications 
+			`UPDATE notifications
 			 SET status = 'PROCESSING',
 			     updated_at = now()
 			 WHERE id = $1`,

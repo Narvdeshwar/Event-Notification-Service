@@ -5,14 +5,13 @@ import (
 	"time"
 )
 
-func (r *PostGresRepo) ScheduleRetry(ctx context.Context, id string, nextRetry time.Time) error {
+func (r *PostgresRepo) ScheduleRetry(ctx context.Context, id string, nextRetry time.Time) error {
 	query := `UPDATE notifications
-	SET STATUS='PENDING,
-	attempts=attepts+1,
-	next_retry_at=$2,
-	updated_at=now()
-	where id=$1'
-	`
+	SET status = 'PENDING',
+	attempts = attempts + 1,
+	next_retry_at = $2,
+	updated_at = now()
+	WHERE id = $1`
 	_, err := r.db.ExecContext(ctx, query, id, nextRetry)
 	return err
 }

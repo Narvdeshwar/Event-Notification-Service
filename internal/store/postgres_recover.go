@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func (r *PostGresRepo) RecoverStuckJobs(ctx context.Context, timeout time.Duration) error {
+func (r *PostgresRepo) RecoverStuckJob(ctx context.Context, timeout time.Duration) error {
 	query := `UPDATE notifications
 	SET status='PENDING',
 	updated_at=now()

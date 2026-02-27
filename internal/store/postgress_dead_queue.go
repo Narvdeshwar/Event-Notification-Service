@@ -3,10 +3,11 @@ package store
 import (
 	"context"
 	"event-driven-notification-service/internal/model"
+
 	"github.com/google/uuid"
 )
 
-func (r *PostGresRepo) MoveToDeadLetter(
+func (r *PostgresRepo) MoveToDeadLetter(
 	ctx context.Context,
 	n model.Notification,
 	errMsg string,

@@ -37,7 +37,7 @@ func (h *Handler) CreateEvent(c *gin.Context) {
 	)
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to enqueue"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 	}
 
