@@ -1,7 +1,7 @@
 CREATE TABLE notifications (
     id UUID PRIMARY KEY,
     type TEXT NOT NULL,
-    recipient TEXT NOT NULL,
+    recipients TEXT NOT NULL,
     payload JSONB NOT NULL,
     status TEXT NOT NULL,
     attempts INT NOT NULL DEFAULT 0,
