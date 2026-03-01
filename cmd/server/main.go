@@ -8,10 +8,10 @@ import (
 	"event-driven-notification-service/internal/metrics"
 	"event-driven-notification-service/internal/service"
 	"event-driven-notification-service/internal/store"
+	"event-driven-notification-service/internal/migrations"
 )
 
 func main() {
-
 	// Load config
 	cfg := config.Load()
 
@@ -24,6 +24,10 @@ func main() {
 		log.Fatal("Could not connect to database after retries:", err)
 	}
 	defer db.Close()
+
+
+	// run migrations after db is connected
+	migrations.Run(db)
 
 	// Create repository
 	repo := store.NewPostgresRepo(db)
